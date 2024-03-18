@@ -6,7 +6,7 @@ import pygame.display
 from pygame import Surface, Rect
 from pygame.font import Font
 
-from code.Const import COLOR_WHITE, MENU_OPTION, EVENT_ENEMY
+from code.Const import COLOR_WHITE, MENU_OPTION, EVENT_ENEMY, WIN_HEIGHT, COLOR_GREE, COLOR_CYAN
 from code.Enemy import Enemy
 from code.Entity import Entity
 from code.EntityFactory import EntityFactory
@@ -41,14 +41,21 @@ class Level:
                     shoot = ent.shoot()
                     if shoot is not None:
                         self.entity_list.append(shoot)
+
+                if ent.name == 'Player1':
+                    self.level_text(14, f'Player1 - Health {ent.health} Score: {ent.score}', COLOR_GREE, (10, 10))
+
+                if ent.name == 'Player2':
+                    self.level_text(14, f'Player2 - Health {ent.health} Score: {ent.score}', COLOR_CYAN, (10, 30))
+
             # texto a ser printado na tela
-            self.level_text(14, f'fps: {clock.get_fps() :.0f}', COLOR_WHITE, (10, 10))
-            self.level_text(14, f'entidades: {len(self.entity_list) :.0f}', COLOR_WHITE, (10, 25))
+            self.level_text(14, f'fps: {clock.get_fps() :.0f}', COLOR_WHITE, (10, WIN_HEIGHT - 35))
+            self.level_text(14, f'entidades: {len(self.entity_list) :.0f}', COLOR_WHITE, (10, WIN_HEIGHT - 20))
             # Atualizar tela
             pygame.display.flip()
 
             # Verificar relacionamento de entidades
-            EntityMediator.verify_collision(entity_listy=self.entity_list)
+            EntityMediator.verify_collision(entity_list=self.entity_list)
             EntityMediator.verify_health(entity_list=self.entity_list)
 
             # Conferir eventos
